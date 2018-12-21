@@ -25,12 +25,18 @@ db:
   restart: always
   container_name: baseshop_db_test
   image: beatpop/mysql:latest
+  privileged: true
   ports:
      - "28081:3306"
   volumes:
-     - "../beatpop/data/mysql:/var/lib/mysql5.7"
+     - "./addition/data/mysql:/var/lib/mysql"
   environment:
     MYSQL_ALLOW_EMPTY_PASSWORD: 1
+  command:
+    --character-set-server=utf8mb4
+    --collation-server=utf8mb4_general_ci
+    --explicit_defaults_for_timestamp=true
+    --innodb_use_native_aio=0
 
 redis:
   restart: always
