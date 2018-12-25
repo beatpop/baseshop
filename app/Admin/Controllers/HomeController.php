@@ -10,11 +10,33 @@ use Encore\Admin\Layout\Row;
 
 class HomeController extends Controller
 {
-    public function index(Content $content)
+    /*public function index(Content $content)
     {
         return $content
             ->header('Dashboard')
             ->description('Description...')
+            ->row(Dashboard::title())
+            ->row(function (Row $row) {
+
+                $row->column(4, function (Column $column) {
+                    $column->append(Dashboard::environment());
+                });
+
+                $row->column(4, function (Column $column) {
+                    $column->append(Dashboard::extensions());
+                });
+
+                $row->column(4, function (Column $column) {
+                    $column->append(Dashboard::dependencies());
+                });
+            });
+    }*/
+
+    public function index(Content $content)
+    {
+        return $content
+            ->header('基地直淘后台首页')
+            ->description('基地直淘小程序后台管理')
             ->row(Dashboard::title())
             ->row(function (Row $row) {
 

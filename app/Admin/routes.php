@@ -15,6 +15,8 @@ Route::group([
 
     Route::group(['namespace' => 'Products'], function (Router $router) {
         $router->resource('brands', BrandController::class);
-
+        $router->resource('productcategories', ProductCategoryController::class);
+        $router->resource('products', ProductController::class);
+        $router->resource('productskus', ProductSkuController::class);
     });
 });

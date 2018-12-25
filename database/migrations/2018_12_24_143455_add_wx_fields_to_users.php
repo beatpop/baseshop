@@ -24,6 +24,7 @@ class AddWxFieldsToUsers extends Migration
             $table->string("wx_province", 100)->nullable()->comment("微信用户所在省份");
             $table->string("wx_country", 100)->nullable()->comment("微信用户所在国家");
             $table->string("wx_language")->nullable()->comment("微信用户语言");
+            $table->string("login_ip")->nullable()->comment("登录IP");
         });
     }
 
@@ -45,6 +46,7 @@ class AddWxFieldsToUsers extends Migration
             $table->dropColumn("wx_province");
             $table->dropColumn("wx_country");
             $table->dropColumn("wx_language");
+            $table->dropColumn("login_ip");
         });
     }
 }

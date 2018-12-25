@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+/**
+ * 商品SKU表
+ */
 class CreateProductSkusTable extends Migration
 {
     /**
@@ -21,10 +24,8 @@ class CreateProductSkusTable extends Migration
             $table->decimal('price', 10)->default(0.00)->comment("价格");
             $table->unsignedInteger('stock')->nullable()->default(0)->comment("库存量");
             $table->unsignedInteger('product_id')->nullable()->comment("所属商品");
-            $table->boolean('is_new')->nullable()->default(0)->comment("是否新品");
             $table->boolean('is_on_sale')->nullable()->default(1)->comment('是否上架');
             $table->string('primary_picture')->default('')->comment('商品主图');
-            $table->json('picture_list')->nullable()->comment('商品列表图');
             $table->decimal('retail_price', 10)->unsigned()->default(0.00)->comment('零售价格');
             $table->boolean('is_promotion')->nullable()->default(0)->comment("是否促销");
             $table->decimal('promotion_price', 10)->nullable()->unsigned()->default(0.00)->comment('促销价格');

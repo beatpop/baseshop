@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+/**
+ * 商品分类-商品中间表
+ */
 class CreateProductCategoryProductTable extends Migration
 {
     /**

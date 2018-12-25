@@ -21,4 +21,13 @@ class ProductCategory extends Model
     {
         return $this->hasMany(Product::class, "product_id");
     }
+
+    public static function getParentName($parentId)
+    {
+        if (!empty($parentId)) {
+            $categoryParent = ProductCategory::find($parentId);
+            return $categoryParent->name;
+        }
+        return null;
+    }
 }
