@@ -83,17 +83,19 @@ class ProductSkuController extends Controller
         $grid = new Grid(new ProductSku);
 
         $grid->column('id', 'ID');
-        $grid->column('name', 'sku名称');
-        $grid->column('sku_number', 'sku编号');
-        $grid->column('description', 'sku描述');
-        $grid->column('price', '价格');
-        $grid->column('stock', '库存量');
-        $grid->column('product_id', '所属商品');
-        $grid->column('is_on_sale', '是否上架');
+        $grid->column('name', 'sku名称')->editable();
+        $grid->column('sku_number', 'sku编号')->editable();
+        // $grid->column('description', 'sku描述');
+        $grid->product("所属商品")->display(function ($product) {
+            return $product['name'];
+        });
+        $grid->column('price', '原价')->editable();
+        $grid->column('stock', '库存量')->editable();
+        $grid->column('is_on_sale', '是否上架')->using([0 => '否', 1 => '是']);
         $grid->column('primary_picture', '商品主图');
-        $grid->column('retail_price', '零售价格');
-        $grid->column('is_promotion', '是否促销');
-        $grid->column('promotion_price', '促销价格');
+        $grid->column('retail_price', '零售价格')->editable();
+        $grid->column('is_promotion', '是否促销')->using([0 => '否', 1 => '是']);
+        $grid->column('promotion_price', '促销价格')->editable();
 
         return $grid;
     }
@@ -106,21 +108,22 @@ class ProductSkuController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(ProductSku::findOrFail($id));
+        $productSku = ProductSku::findOrFail($id);
+        $show = new Show($productSku);
 
         $show->field('id', 'ID');
         $show->field('name', 'sku名称');
         $show->field('sku_number', 'sku编号');
         $show->field('description', 'sku描述');
-        $show->field('price', '价格');
+        $show->field('product', '所属商品')->as(function ($product) {
+            return $product->name;
+        });
+        $show->field('price', '原价');
         $show->field('stock', '库存量');
-        $show->field('product_id', '所属商品')->using([
-            
-        ]);
-        $show->field('is_on_sale', '是否上架');
+        $show->field('is_on_sale', '是否上架')->using([0 => '否', 1 => '是']);
         $show->field('primary_picture', '商品主图');
         $show->field('retail_price', '零售价格');
-        $show->field('is_promotion', '是否促销');
+        $show->field('is_promotion', '是否促销')->using([0 => '否', 1 => '是']);
         $show->field('promotion_price', '促销价格');
 
         return $show;
@@ -141,9 +144,9 @@ class ProductSkuController extends Controller
         $form->text('name', 'sku名称');
         $form->text('sku_number', 'sku编号');
         $form->textarea('description', 'sku描述');
-        $form->decimal('price', '价格');
-        $form->number('stock', '库存量')->default(0);
         $form->select('product_id', '所属商品')->options($products);
+        $form->decimal('price', '原价');
+        $form->number('stock', '库存量')->default(0);
         $form->switch('is_on_sale', '是否上架')->default(1);
         $form->text('primary_picture', '商品主图')->default('');
         $form->decimal('retail_price', '零售价格');

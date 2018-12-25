@@ -24,8 +24,8 @@ class CreateProductCategoriesTable extends Migration
             $table->unsignedInteger('parent_id')->unsigned()->nullable()->index('parent_id')->comment('父级分类id');
             $table->tinyInteger('priority')->nullable()->unsigned()->default(50)->comment('排序优先级');
             $table->tinyInteger('is_show')->default(1)->comment('是否展示');
-            $table->string('banner_url')->default('')->comment('banner图片url');
-            $table->string('icon_url')->nullable()->default('')->comment('分类图标');
+            $table->string('banner_url')->nullable()->default('')->comment('banner图片url');
+            $table->string('icon_url')->nullable()->comment('分类图标');
             $table->json('img_list')->nullable()->comment('图片地址');
             $table->tinyInteger('level')->default(0)->comment('分类层级');
             $table->string('type')->nullable()->default('')->comment('类别');

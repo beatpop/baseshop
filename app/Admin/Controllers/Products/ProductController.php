@@ -5,6 +5,7 @@ namespace App\Admin\Controllers\Products;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
+use App\Models\ProductCategory;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -91,25 +92,34 @@ class ProductController extends Controller
         $grid = new Grid(new Product);
 
         $grid->column('id', 'ID');
-        $grid->column('brand_id', '品牌');
-        $grid->column('product_number', '商品编号');
-        $grid->column('name', '商品名称');
-        $grid->column('amount', '库存量');
-        $grid->column('keywords', '关键字');
+        $grid->column('brand_id', '所属品牌')->display(function ($brandId) {
+            return Brand::find($brandId)->name;
+        });
+        $grid->categories("所属商品分类")->display(function ($categories) {
+            $categoryNames = '';
+            foreach ($categories as $category) {
+                $categoryNames .= $category['name'] . "、";
+            }
+            return rtrim($categoryNames, "、");
+        });
+        $grid->column('product_number', '商品编号')->editable();
+        $grid->column('name', '商品名称')->editable();
+        $grid->column('amount', '库存量')->editable();
+        $grid->column('keywords', '关键字')->editable();
         /*$grid->column('brief', '简述');
         $grid->column('description', '描述');*/
         $grid->column('is_on_sale', '是否上架')->using([0 => '否', 1 => '是']);
-        $grid->column('priority', '优先级');
+        $grid->column('priority', '优先级')->editable();
         // $grid->column('is_delete', '是否已删除')->using([0 => '否', 1 => '是']);
-        $grid->column('original_price', '原价');
-        $grid->column('retail_price', '零售价');
+        $grid->column('original_price', '原价')->editable();
+        $grid->column('retail_price', '零售价')->editable();
         // $grid->column('extra_price', '额外价格');
-        $grid->column('freight_price', '运费');
+        $grid->column('freight_price', '运费')->editable();
         $grid->column('is_new', '是否新品')->using([0 => '否', 1 => '是']);
-        $grid->column('unit', '商品单位');
+        $grid->column('unit', '商品单位')->editable();
         $grid->column('primary_picture', '商品主图地址');
         $grid->column('picture_list', '商品详细图列表');
-        $grid->column('sell_volume', '销售量');
+        $grid->column('sell_volume', '销售量')->editable();
         /*$grid->column('primary_product_id', '商品主SKU');
         $grid->column('unit_price', '单位价格');
         $grid->column('is_promotion', '是否促销')->using([0 => '否', 1 => '是']);
@@ -132,10 +142,20 @@ class ProductController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Product::findOrFail($id));
+        $product = Product::findOrFail($id);
+        $show = new Show($product);
 
         $show->field('id', 'ID');
-        $show->field('brand_id', '品牌')->setValue(Brand::find($this->brand_id));
+        $show->field('brand_id', '所属品牌')->as(function ($brandId) {
+            return Brand::find($brandId)->name;
+        });
+        $show->field('categories', '商品分类')->as(function ($categories) {
+            $categoryNames = '';
+            foreach ($categories as $category) {
+                $categoryNames .= $category->name . "、";
+            }
+            return rtrim($categoryNames, "、");
+        });
         $show->field('product_number', '商品编号');
         $show->field('name', '商品名称');
         $show->field('amount', '库存量');
@@ -178,9 +198,11 @@ class ProductController extends Controller
         $form = new Form(new Product);
 
         $brands = Brand::all()->pluck("name", "id")->toArray();
+        $productCategories = ProductCategory::all()->pluck("name", "id")->toArray();
 
         $form->display('id', 'ID');
         $form->select('brand_id', '品牌')->options($brands);
+        $form->multipleSelect("categories", '所属分类')->options($productCategories);
         $form->text('product_number', '商品编号');
         $form->text('name', '商品名称');
         $form->number('amount', '商品库存');
