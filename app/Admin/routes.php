@@ -14,6 +14,8 @@ Route::group([
     $router->get('/', 'HomeController@index');
 
     Route::group(['namespace' => 'Products'], function (Router $router) {
+        $router->resource('wx/users', UserController::class);
+        $router->resource('wx/useraddresses', UserAddressController::class);
         $router->resource('brands', BrandController::class);
         $router->resource('productcategories', ProductCategoryController::class);
         $router->resource('products', ProductController::class);

@@ -20,6 +20,7 @@ php:
    - "/mnt/workspace/beatpop/baseshop/storage/data:/var/www/html/storage/data"
   links:
    - db:db
+   - redis:redis
 
 db:
   restart: always
@@ -42,5 +43,3 @@ redis:
   restart: always
   container_name: baseshop_redis_test
   image: redis:latest
-  ports:
-     - "6379:6379"

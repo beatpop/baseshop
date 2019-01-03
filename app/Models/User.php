@@ -32,4 +32,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class, "role_user");
     }
+
+    public function addresses()
+    {
+        return $this->hasMany(UserAddress::class);
+    }
 }
